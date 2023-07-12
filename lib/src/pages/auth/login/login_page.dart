@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:login_firebase/src/pages/auth/auth_state.dart';
 import 'package:login_firebase/src/core/ui/helpers/messages.dart';
 import 'package:login_firebase/src/core/ui/styles/text_styles.dart';
+import 'package:login_firebase/src/pages/auth/login/login_bloc.dart';
+import 'package:login_firebase/src/pages/auth/login/login_state.dart';
+import 'package:login_firebase/src/pages/home/home_page.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../auth_bloc.dart';
 import '../auth_event.dart';
+import 'login_event.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -35,16 +38,18 @@ class _LoginPageState extends State<LoginPage> with Messages {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: SafeArea(
           child: SingleChildScrollView(
-            child: BlocConsumer<AuthBloc, AuthState>(
+            child: BlocConsumer<LoginBloc, LoginState>(
               listener: (context, state) {
-                if (state.status == AuthStatus.authenticated) {
-                  Navigator.of(context).pushReplacementNamed('/home');
-                } else if (state.status == AuthStatus.error) {
+                if (state.status == LoginStatus.success) {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ));
+                } else if (state.status == LoginStatus.error) {
                   showError(state.errorMessage ?? 'Error desconhecido');
                 }
               },
               builder: (context, state) {
-                final isLoading = state.status == AuthStatus.loading;
+                final isLoading = state.status == LoginStatus.loading;
                 return Column(
                   children: [
                     const SizedBox(height: 30),
@@ -102,7 +107,7 @@ class _LoginPageState extends State<LoginPage> with Messages {
                               final valid =
                                   _formKey.currentState?.validate() ?? false;
                               if (valid) {
-                                BlocProvider.of<AuthBloc>(context)
+                                BlocProvider.of<LoginBloc>(context)
                                     .add(LoginRequest(
                                   email: _emailEC.text,
                                   password: _passwordEC.text,

@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       : super(const AuthState.initial()) {
     on<UserChanged>(_onUserChanged);
     on<LogoutRequest>(_onLogoutRequest);
-    on<LoginRequest>(_onLoginRequest);
+
     on<LoginGoogleRequest>(_signInWithGoogle);
     on<RegisterRequest>(_onRegisterRequest);
 
@@ -46,16 +46,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> close() {
     userSubscription?.cancel();
     return super.close();
-  }
-
-  Future<void> _onLoginRequest(
-    LoginRequest event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
-    final newState = await firebaseAuthService.loginWithEmailAndPassword(
-        event.email, event.password);
-    emit(newState);
   }
 
   Future<void> _onRegisterRequest(

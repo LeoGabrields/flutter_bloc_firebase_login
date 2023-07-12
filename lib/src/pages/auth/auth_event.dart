@@ -11,16 +11,6 @@ class UserChanged implements AuthEvent {
   const UserChanged(this.user);
 }
 
-class LoginRequest implements AuthEvent {
-  final String email;
-  final String password;
-
-  const LoginRequest({
-    required this.email,
-    required this.password,
-  });
-}
-
 class RegisterRequest implements AuthEvent {
   final String email;
   final String password;

@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:login_firebase/src/data/adapters/user_adapter.dart';
 import 'package:login_firebase/src/pages/auth/auth_state.dart';
 import 'package:login_firebase/src/models/user_model.dart';
+import 'package:login_firebase/src/pages/auth/login/login_state.dart';
 
 class FirebaseAuthService {
   final _auth = FirebaseAuth.instance;
@@ -16,16 +17,16 @@ class FirebaseAuthService {
     });
   }
 
-  Future<AuthState> loginWithEmailAndPassword(
+  Future<LoginState> loginWithEmailAndPassword(
       String email, String password) async {
     try {
       final result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       if (result.user != null) {
-        final user = UserAdapter.fromFirebaseUser(result.user!);
-        return AuthState(status: AuthStatus.authenticated, user: user);
+        // final user = UserAdapter.fromFirebaseUser(result.user!);
+        return const LoginState(status: LoginStatus.success);
       } else {
-        return const AuthState(status: AuthStatus.unauthenticated);
+        return const LoginState(status: LoginStatus.error);
       }
     } on FirebaseAuthException catch (e) {
       var errorMessage = '';
@@ -39,7 +40,7 @@ class FirebaseAuthService {
         case 'wrong-password':
           errorMessage = 'Senha incorreta';
       }
-      return AuthState(status: AuthStatus.error, errorMessage: errorMessage);
+      return LoginState(status: LoginStatus.error, errorMessage: errorMessage);
     }
   }
 
