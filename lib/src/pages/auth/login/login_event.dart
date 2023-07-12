@@ -9,3 +9,5 @@ class LoginRequest implements LoginEvent {
     required this.password,
   });
 }
+
+class LoginGoogleRequest implements LoginEvent {}

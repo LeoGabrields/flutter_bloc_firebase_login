@@ -4,11 +4,10 @@ import 'package:login_firebase/src/core/ui/helpers/messages.dart';
 import 'package:login_firebase/src/core/ui/styles/text_styles.dart';
 import 'package:login_firebase/src/pages/auth/login/login_bloc.dart';
 import 'package:login_firebase/src/pages/auth/login/login_state.dart';
+import 'package:login_firebase/src/pages/auth/register/register_page.dart';
 import 'package:login_firebase/src/pages/home/home_page.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../auth_bloc.dart';
-import '../auth_event.dart';
 import 'login_event.dart';
 
 class LoginPage extends StatefulWidget {
@@ -149,7 +148,7 @@ class _LoginPageState extends State<LoginPage> with Messages {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        BlocProvider.of<AuthBloc>(context)
+                        BlocProvider.of<LoginBloc>(context)
                             .add(LoginGoogleRequest());
                       },
                       style: ElevatedButton.styleFrom(
@@ -186,7 +185,9 @@ class _LoginPageState extends State<LoginPage> with Messages {
                         const SizedBox(width: 4),
                         TextButton(
                           onPressed: () => Navigator.of(context)
-                              .pushReplacementNamed('/register'),
+                              .pushReplacement(MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          )),
                           child: const Text(
                             'Cadastre-se',
                             style: TextStyle(

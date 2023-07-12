@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_firebase/src/pages/auth/auth_bloc.dart';
 import 'package:login_firebase/src/pages/auth/auth_state.dart';
 import 'package:login_firebase/src/pages/auth/login/login_bloc.dart';
+import 'package:login_firebase/src/pages/auth/register/register_bloc.dart';
 import 'package:login_firebase/src/pages/home/home_page.dart';
 
 import 'data/services/firebase_auth_service.dart';
@@ -25,6 +26,11 @@ class AppWidget extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => LoginBloc(
+              firebaseAuthService: context.read(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => RegisterBloc(
               firebaseAuthService: context.read(),
             ),
           ),

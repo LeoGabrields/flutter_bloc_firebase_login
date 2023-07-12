@@ -5,6 +5,8 @@ import 'package:login_firebase/src/pages/auth/auth_state.dart';
 import 'package:login_firebase/src/models/user_model.dart';
 import 'package:login_firebase/src/pages/auth/login/login_state.dart';
 
+import '../../pages/auth/register/register_state.dart';
+
 class FirebaseAuthService {
   final _auth = FirebaseAuth.instance;
 
@@ -23,7 +25,6 @@ class FirebaseAuthService {
       final result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       if (result.user != null) {
-        // final user = UserAdapter.fromFirebaseUser(result.user!);
         return const LoginState(status: LoginStatus.success);
       } else {
         return const LoginState(status: LoginStatus.error);
@@ -45,7 +46,7 @@ class FirebaseAuthService {
   }
 
   // Método que permita aos usuários criar uma conta
-  Future<AuthState> createUserWithEmailAndPassoword(
+  Future<RegisterState> createUserWithEmailAndPassoword(
       String email, String password) async {
     try {
       final result = await _auth.createUserWithEmailAndPassword(
@@ -53,10 +54,9 @@ class FirebaseAuthService {
         password: password,
       );
       if (result.user != null) {
-        final user = UserAdapter.fromFirebaseUser(result.user!);
-        return AuthState(status: AuthStatus.authenticated, user: user);
+        return const RegisterState(status: RegisterStatus.success);
       } else {
-        return const AuthState(status: AuthStatus.unauthenticated);
+        return const RegisterState(status: RegisterStatus.error);
       }
     } on FirebaseAuthException catch (e) {
       var errorMessage = '';
@@ -70,7 +70,8 @@ class FirebaseAuthService {
         case 'weak-password':
           errorMessage = 'Senha fraca';
       }
-      return AuthState(status: AuthStatus.error, errorMessage: errorMessage);
+      return RegisterState(
+          status: RegisterStatus.success, errorMessage: errorMessage);
     }
   }
 
@@ -81,7 +82,7 @@ class FirebaseAuthService {
   }
 
   // Google Sign In
-  Future<AuthState> logInWithGoogle() async {
+  Future<LoginState> logInWithGoogle() async {
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     final credential = GoogleAuthProvider.credential(
@@ -90,10 +91,9 @@ class FirebaseAuthService {
     );
     final result = await _auth.signInWithCredential(credential);
     if (result.user != null) {
-      final user = UserAdapter.fromFirebaseUser(result.user!);
-      return AuthState(status: AuthStatus.authenticated, user: user);
+      return const LoginState(status: LoginStatus.success);
     } else {
-      return const AuthState(status: AuthStatus.unauthenticated);
+      return const LoginState(status: LoginStatus.error);
     }
   }
 }

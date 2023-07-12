@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "240060001824",
+    "project_id": "loja-ab167",
+    "storage_bucket": "loja-ab167.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240060001824:android:5fc66d3cf2245792a35645",
+        "android_client_info": {
+          "package_name": "br.com.leosouza.loja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240060001824-5s53pl4sku7uhvcbs7m5m3or7fs6t3sl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwQpUiKN8CehHmm1wpZolxGxQOaTARdrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240060001824-5s53pl4sku7uhvcbs7m5m3or7fs6t3sl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

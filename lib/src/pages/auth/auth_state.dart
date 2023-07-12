@@ -4,8 +4,6 @@ import '../../models/user_model.dart';
 enum AuthStatus {
   authenticated,
   unauthenticated,
-  loading,
-  error,
 }
 
 class AuthState extends Equatable {

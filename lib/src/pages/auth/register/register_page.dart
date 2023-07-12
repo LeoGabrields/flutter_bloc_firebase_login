@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_firebase/src/core/ui/helpers/messages.dart';
-import 'package:login_firebase/src/pages/auth/auth_bloc.dart';
 import 'package:login_firebase/src/core/ui/styles/text_styles.dart';
-import 'package:login_firebase/src/pages/auth/auth_state.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../auth_event.dart';
+import '../../home/home_page.dart';
+import '../login/login_bloc.dart';
+import '../login/login_event.dart';
+import '../login/login_page.dart';
+import 'register_bloc.dart';
+import 'register_event.dart';
+import 'register_state.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -35,16 +39,18 @@ class _RegisterPageState extends State<RegisterPage> with Messages {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: SafeArea(
           child: SingleChildScrollView(
-            child: BlocConsumer<AuthBloc, AuthState>(
+            child: BlocConsumer<RegisterBloc, RegisterState>(
               listener: (context, state) {
-                if (state.status == AuthStatus.authenticated) {
-                  Navigator.of(context).pushReplacementNamed('/home');
-                } else if (state.status == AuthStatus.error) {
+                if (state.status == RegisterStatus.success) {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ));
+                } else if (state.status == RegisterStatus.error) {
                   showError(state.errorMessage ?? '');
                 }
               },
               builder: (context, state) {
-                final isLoading = state.status == AuthStatus.loading;
+                final isLoading = state.status == RegisterStatus.loading;
                 return Column(
                   children: [
                     const SizedBox(height: 30),
@@ -118,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> with Messages {
                               final valid =
                                   _formKey.currentState?.validate() ?? false;
                               if (valid) {
-                                BlocProvider.of<AuthBloc>(context)
+                                BlocProvider.of<RegisterBloc>(context)
                                     .add(RegisterRequest(
                                   email: _emailEC.text,
                                   password: _passwordEC.text,
@@ -160,7 +166,8 @@ class _RegisterPageState extends State<RegisterPage> with Messages {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context.watch<AuthBloc>().add(LoginGoogleRequest());
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(LoginGoogleRequest());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -195,7 +202,9 @@ class _RegisterPageState extends State<RegisterPage> with Messages {
                         ),
                         TextButton(
                           onPressed: () => Navigator.of(context)
-                              .pushReplacementNamed('/login'),
+                              .pushReplacement(MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          )),
                           child: const Text(
                             'Login',
                             style: TextStyle(

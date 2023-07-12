@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '../../models/user_model.dart';
 
 sealed class AuthEvent {}
@@ -10,14 +9,3 @@ class UserChanged implements AuthEvent {
 
   const UserChanged(this.user);
 }
-
-class RegisterRequest implements AuthEvent {
-  final String email;
-  final String password;
-  RegisterRequest({
-    required this.email,
-    required this.password,
-  });
-}
-
-class LoginGoogleRequest implements AuthEvent {}
